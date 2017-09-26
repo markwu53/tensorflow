@@ -29,7 +29,9 @@ eval_input_fn = tf.estimator.inputs.numpy_input_fn(
 
 # We can invoke 1000 training steps by invoking the  method and passing the
 # training data set.
+print("begin training")
 estimator.train(input_fn=input_fn, steps=1000)
+print("end training")
 
 # Here we evaluate how well our model did.
 train_metrics = estimator.evaluate(input_fn=train_input_fn)
