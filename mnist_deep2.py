@@ -25,7 +25,7 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        for i in range(1000):
+        for i in range(200):
             batch = mnist.train.next_batch(50)
             if i % 100 == 0: print('step %d, training accuracy %g' % (i, accuracy.eval(feed_dict={x:batch[0], y_:batch[1], keep_prob:1.0})))
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
