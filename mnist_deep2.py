@@ -1,6 +1,8 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
+import time
 
+def consoleLog(message): print("[{}] {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), message))
 def conv2d(x, W): return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 def max_pool_2x2(x): return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 def weight_variable(shape): return tf.Variable(tf.truncated_normal(shape, stddev=0.1))
@@ -25,9 +27,9 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        for i in range(200):
+        for i in range(2000):
             batch = mnist.train.next_batch(50)
-            if i % 100 == 0: print('step %d, training accuracy %g' % (i, accuracy.eval(feed_dict={x:batch[0], y_:batch[1], keep_prob:1.0})))
+            if i % 100 == 0: consoleLog('step %d, training accuracy %g' % (i, accuracy.eval(feed_dict={x:batch[0], y_:batch[1], keep_prob:1.0})))
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
         print('test accuracy %g' % accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
 
