@@ -12,7 +12,7 @@ batch_size = 100
 hidden1 = 128
 hidden2 = 32
 learning_rate = .01
-max_steps = 2000
+max_steps = 5000
 
 def main(_):
     #building nn layers
