@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import math
 import time
+import os
 
 NUM_CLASSES = 10
 IMAGE_SIZE = 28
@@ -71,13 +72,13 @@ def main(_):
                 feed_dict = { images: images_feed, labels: labels_feed, }
                 sess.run(train_op, feed_dict=feed_dict)
                 if step % 100 == 0:
+                    #summary_str = sess.run(summary, feed_dict=feed_dict)
+                    #summary_writer.add_summary(summary_str, step)
+                    #summary_writer.flush()
                     duration = time.time() - start_time
                     start_time = time.time()
                     loss_value = sess.run(loss, feed_dict=feed_dict)
                     print('Step %d: loss = %.2f (%.3f sec)' % (step, loss_value, duration))
-                    summary_str = sess.run(summary, feed_dict=feed_dict)
-                    summary_writer.add_summary(summary_str, step)
-                    summary_writer.flush()
                 if (step + 1) % 1000 == 0 or (step + 1) == max_steps:
                     checkpoint_file = os.path.join(log_dir, 'model.ckpt')
                     saver.save(sess, checkpoint_file, global_step=step)
