@@ -12,7 +12,7 @@ batch_size = 100
 hidden1 = 128
 hidden2 = 32
 learning_rate = .01
-max_steps = 200
+max_steps = 2000
 
 def do_eval(sess, data_set, images, labels, eval_correct):
     true_count = 0
@@ -28,11 +28,14 @@ def do_eval(sess, data_set, images, labels, eval_correct):
 data_sets = input_data.read_data_sets(data_dir)
 images = tf.placeholder(tf.float32, shape=(batch_size, IMAGE_PIXELS))
 labels = tf.to_int64(tf.placeholder(tf.int32, shape=(batch_size)))
+
 hidden1_out = tf.nn.relu(tf.matmul(images, tf.Variable(tf.truncated_normal([IMAGE_PIXELS, hidden1], stddev=1.0 / math.sqrt(float(IMAGE_PIXELS))))) + tf.Variable(tf.zeros([hidden1])))
 hidden2_out = tf.nn.relu(tf.matmul(hidden1_out, tf.Variable(tf.truncated_normal([hidden1, hidden2], stddev=1.0 / math.sqrt(float(hidden1))))) + tf.Variable(tf.zeros([hidden2])))
 logits = tf.matmul(hidden2_out, tf.Variable(tf.truncated_normal([hidden2, NUM_CLASSES], stddev=1.0 / math.sqrt(float(hidden2))))) + tf.Variable(tf.zeros([NUM_CLASSES]))
+
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels, logits=logits))
 train_op = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=tf.Variable(0, trainable=False))
+
 eval_correct = tf.reduce_sum(tf.cast(tf.nn.in_top_k(logits, labels, 1), tf.int32))
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
